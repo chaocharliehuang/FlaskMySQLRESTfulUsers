@@ -16,8 +16,19 @@
         </p>
         <p>
             <a href="/users/{{ user['id'] }}/edit">Edit</a> | 
-            <a href="/users/{{ user['id'] }}/destroy">Delete</a> | 
+            <a href="" id="del_btn">Delete</a> | 
             <a href="/users">Go back</a>
+            <form action="/users/{{ user['id'] }}/destroy" method="POST" id="form_destroy">
+                <input type="hidden" name="id" value={{ user['id'] }}>
+            </form>
         </p>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $('#del_btn').click(function(e) {
+                $('#form_destroy').submit();
+                e.preventDefault();
+            });
+        </script>
     </body>
 </html>

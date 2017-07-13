@@ -46,6 +46,38 @@ def new():
 
 @app.route('/users/create', methods=['POST'])
 def create():
-    return redirect('/users/<id>')
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+
+    # FORM VALIDATION
+    if len(first_name) < 2 or len(last_name) < 2 or not first_name.isalpha() or not last_name.isalpha():
+        flash('First and last names must be at least 2 characters and only contain letters!')
+        return redirect('/users/new')
+
+    if len(email) < 1:
+        flash('Email cannot be blank!')
+        return redirect('/users/new')
+    elif not EMAIL_REGEX.match(email):
+        flash('Invalid email address!')
+        return redirect('/users/new')
+
+    # INSERT NEW USER INTO DATABASE
+    insert_data = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email
+    }
+    insert_query = "INSERT INTO users (first_name, last_name, email, created_at, updated_at) VALUES (:first_name, :last_name, :email, NOW(), NOW())"
+    new_user_id = mysql.query_db(insert_query, insert_data)
+
+    return redirect('/users/' + str(new_user_id))
+
+@app.route('/users/<id>/destroy', methods=['POST'])
+def destroy(id):
+    delete_data = {'id': int(id)}
+    delete_query = "DELETE FROM users WHERE id = :id"
+    mysql.query_db(delete_query, delete_data)
+    return redirect('/users')
 
 app.run(debug=True)
