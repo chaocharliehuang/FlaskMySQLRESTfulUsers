@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>User</title>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>User {{ user['id'] }}</h1>
+        <p>
+            Full Name: {{ user['full_name'] }}<br>
+            Email: {{ user['email'] }}<br>
+            Created at: {{ user['created_at'] }}
+        </p>
+        <p>
+            <a href="/users/{{ user['id'] }}/edit">Edit</a> | 
+            <a href="/users/{{ user['id'] }}/destroy">Delete</a> | 
+            <a href="/users">Go back</a>
+        </p>
+    </body>
+</html>
